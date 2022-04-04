@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - "main"
+      - "ghactions"
 
 env:
   CONTROLLER_IMAGE_NAME: simple-demo-operator
