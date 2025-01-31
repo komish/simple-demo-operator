@@ -11,9 +11,9 @@ metadata:
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: sdo-jogonza-test
-    appstudio.openshift.io/component: operator-image
+    appstudio.openshift.io/component: controller-image
     pipelines.appstudio.openshift.io/type: build
-  name: operator-image-on-push
+  name: controller-image-on-push
   namespace: jogonza-tenant
 spec:
   params:
@@ -22,9 +22,9 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/jogonza-tenant/operator-image:{{revision}}
+    value: quay.io/redhat-user-workloads/jogonza-tenant/controller-image:{{revision}}
   - name: dockerfile
-    value: bundle.Dockerfile
+    value: Dockerfile
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while reducing network traffic.

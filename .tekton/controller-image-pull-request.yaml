@@ -4,16 +4,17 @@ metadata:
   annotations:
     build.appstudio.openshift.io/repo: https://github.com/komish/simple-demo-operator?rev={{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
       == "main"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: sdo-jogonza-test
-    appstudio.openshift.io/component: operator-image
+    appstudio.openshift.io/component: controller-image
     pipelines.appstudio.openshift.io/type: build
-  name: operator-image-on-push
+  name: controller-image-on-pull-request
   namespace: jogonza-tenant
 spec:
   params:
@@ -22,9 +23,11 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/jogonza-tenant/operator-image:{{revision}}
+    value: quay.io/redhat-user-workloads/jogonza-tenant/controller-image:on-pr-{{revision}}
+  - name: image-expires-after
+    value: 5d
   - name: dockerfile
-    value: bundle.Dockerfile
+    value: Dockerfile
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while reducing network traffic.
@@ -356,23 +359,14 @@ spec:
       runAfter:
       - build-image-index
       taskRef:
-        resolver: git
         params:
-        - name: url
-          value: https://github.com/komish/simple-demo-operator.git
-        - name: revision
-          value: main
-        - name: pathInRepo
-          value: task.yml
-      # taskRef:
-      #   params:
-      #   - name: name
-      #     value: ecosystem-cert-preflight-checks
-      #   - name: bundle
-      #     value: quay.io/konflux-ci/tekton-catalog/task-ecosystem-cert-preflight-checks:0.1@sha256:df8a25a3431a70544172ed4844f9d0c6229d39130633960729f825a031a7dea9
-      #   - name: kind
-      #     value: task
-      #   resolver: bundles
+        - name: name
+          value: ecosystem-cert-preflight-checks
+        - name: bundle
+          value: quay.io/konflux-ci/tekton-catalog/task-ecosystem-cert-preflight-checks:0.1@sha256:df8a25a3431a70544172ed4844f9d0c6229d39130633960729f825a031a7dea9
+        - name: kind
+          value: task
+        resolver: bundles
       when:
       - input: $(params.skip-checks)
         operator: in
