@@ -175,7 +175,7 @@ spec:
     #       mountPath: /bundle
 
     - name: set-skip-for-bundles
-      image: quay.io/konflux-ci/appstudio-utils:ab6b0b8e40e440158e7288c73aff1cf83a2cc8a9@sha256:24179f0efd06c65d16868c2d7eb82573cce8e43533de6cea14fec3b7446e0b14
+      image: quay.io/redhat-appstudio/konflux-test:v1.4.8@sha256:2224fabdb0a28a415d4af4c58ae53d7c4c53c83c315f12e07d1d7f48a80bfa70
       results:
       - name: test-output
         description: A skipped output result for bundles.
