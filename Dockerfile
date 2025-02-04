@@ -1,5 +1,7 @@
 # Build the manager binary
-FROM golang:1.22 AS builder
+FROM fedora:40 AS builder
+
+RUN dnf install golang -y
 
 WORKDIR /workspace
 # Copy the Go Modules manifests
