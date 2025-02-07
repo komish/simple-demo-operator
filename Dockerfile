@@ -1,5 +1,5 @@
 # Build the manager binary
-FROM fedora:40 AS builder
+FROM fedora:42 AS builder
 
 RUN dnf install golang -y
 
