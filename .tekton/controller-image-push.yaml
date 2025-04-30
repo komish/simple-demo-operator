@@ -356,7 +356,6 @@ spec:
       runAfter:
       - build-image-index
       taskRef:
-        resolver: git
         params:
         - name: url
           value: https://github.com/komish/simple-demo-operator.git
@@ -364,15 +363,7 @@ spec:
           value: main
         - name: pathInRepo
           value: task.yml
-      # taskRef:
-      #   params:
-      #   - name: name
-      #     value: ecosystem-cert-preflight-checks
-      #   - name: bundle
-      #     value: quay.io/konflux-ci/tekton-catalog/task-ecosystem-cert-preflight-checks:0.1@sha256:df8a25a3431a70544172ed4844f9d0c6229d39130633960729f825a031a7dea9
-      #   - name: kind
-      #     value: task
-      #   resolver: bundles
+        resolver: git
       when:
       - input: $(params.skip-checks)
         operator: in
@@ -603,7 +594,8 @@ spec:
       optional: true
     - name: netrc
       optional: true
-  taskRunTemplate: {}
+  taskRunTemplate:
+    serviceAccountName: build-pipeline-controller-image
   workspaces:
   - name: workspace
     volumeClaimTemplate:
