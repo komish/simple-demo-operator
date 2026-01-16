@@ -1,6 +1,6 @@
 module github.com/opdev/simple-demo-operator
 
-go 1.22.0
+go 1.23
 
 require (
 	github.com/onsi/ginkgo v1.16.5
